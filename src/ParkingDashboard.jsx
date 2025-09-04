@@ -6,7 +6,7 @@ export default function ParkingDashboard() {
   useEffect(() => {
     async function loadData() {
       const layout = await fetch("/parking_slots.geojson").then(res => res.json());
-      const apiData = await fetch("https://jenarg7wd6.execute-api.ap-southeast-1.amazonaws.com").then(res => res.json());
+      const apiData = await fetch("https://jenarg7wd6.execute-api.ap-southeast-1.amazonaws.com/slots").then(res => res.json());
 
       // Map DynamoDB slot status
       const statusMap = {};
