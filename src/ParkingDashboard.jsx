@@ -44,7 +44,14 @@ export default function ParkingDashboard() {
             }}
           >
             <strong>{s.slot_id}</strong>
-            <div>{s.status}</div>
+            <div
+              style={{
+                color: s.status === "occupied" ? "green" : "red", // ✅ conditional color
+                fontWeight: "bold",
+              }}
+              >
+              {s.status}
+            </div>
             <div style={{ fontSize: 12, color: "#666" }}>{s.last_updated}</div>
           </div>
         ))}
