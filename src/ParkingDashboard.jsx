@@ -7,17 +7,17 @@ export default function ParkingDashboard() {
 
   useEffect(() => {
     const fetchSlots = async () => {
-  try {
-    const res = await fetch(API_URL);
-    const text = await res.text();  // read raw response
-    console.log("Raw API response:", text);
+      try {
+        const res = await fetch(API_URL);
+        const text = await res.text();  
+        console.log("Raw API response:", text); 
 
-    const data = JSON.parse(text);  // try parsing manually
-    setSlots(data);
-  } catch (err) {
-    console.error("Error fetching/parsing:", err);
-  }
-};
+        const data = JSON.parse(text);  
+        setSlots(data);
+      } catch (err) {
+        console.error("Error fetching/parsing:", err);
+      }
+    }; // ✅ this was missing
 
     fetchSlots();
     const interval = setInterval(fetchSlots, 5000);
