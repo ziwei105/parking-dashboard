@@ -1,48 +1,50 @@
 import React, { useEffect, useState } from "react";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function ParkingDashboard() {
   const [slots, setSlots] = useState([]);
 
   useEffect(() => {
-    async function loadData() {
-      const layout = await fetch("/parking_slots.geojson").then(res => res.json());
-      const apiData = await fetch(process.env.REACT_APP_API_URL).then(res => res.json());
-
-      // Map DynamoDB slot status
-      const statusMap = {};
-      apiData.forEach(s => {
-        statusMap[s.slot_id] = s.status;
-      });
-
-      setSlots(layout.features.map(f => ({
-        id: f.properties.slot_id,
-        status: statusMap[f.properties.slot_id] || "unknown"
-      })));
-    }
-    loadData();
+    const fetchSlots = async () => {
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        setSlots(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchSlots();
+    const interval = setInterval(fetchSlots, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div>
-      <h2>UTAR Parking Dashboard</h2>
-      <table border="1" style={{ borderCollapse: "collapse", minWidth: "300px" }}>
-        <thead>
-          <tr>
-            <th>Slot ID</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {slots.map(slot => (
-            <tr key={slot.id}>
-              <td>{slot.id}</td>
-              <td style={{ color: slot.status === "occupied" ? "red" : "green" }}>
-                {slot.status}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div style={{ padding: 20 }}>
+      <h2>Parking Status</h2>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill,150px)",
+          gap: 10,
+        }}
+      >
+        {slots.map((s) => (
+          <div
+            key={s.slot_id}
+            style={{
+              border: "1px solid #ccc",
+              padding: 10,
+              borderRadius: 8,
+            }}
+          >
+            <strong>{s.slot_id}</strong>
+            <div>{s.status}</div>
+            <div style={{ fontSize: 12, color: "#666" }}>{s.last_updated}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
