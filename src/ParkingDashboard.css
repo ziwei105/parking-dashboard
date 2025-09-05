@@ -1,20 +1,22 @@
 .parking-dashboard {
   padding: 20px;
+  text-align: center; /* center align title */
 }
 
 .parking-lot {
   display: grid;
-  grid-template-columns: repeat(10, 80px); /* 10 slots per row */
-  gap: 10px;
+  grid-template-columns: repeat(10, 120px); /* wider slots */
+  gap: 15px;
   background: #555; /* road color */
   padding: 20px;
   border-radius: 12px;
+  justify-content: center; /* 👈 center the lot */
+  margin-left: 40px;       /* 👈 shift slightly to the right */
 }
 
-/* Each slot = parking box */
 .slot {
-  width: 80px;
-  height: 120px;
+  width: 120px;
+  height: 140px;
   background: #fff;
   border: 2px solid #333;
   border-radius: 6px;
@@ -25,8 +27,11 @@
   align-items: center;
   justify-content: center;
 
-  font-size: 12px;
+  font-size: 13px;
   text-align: center;
+  padding: 5px;
+  overflow: hidden;      /* 👈 prevent text overflow */
+  word-wrap: break-word; /* 👈 wrap long text */
 }
 
 .slot-id {
@@ -39,12 +44,14 @@
 }
 
 .slot-time {
-  font-size: 10px;
-  color: #ddd;
-  margin-top: 4px;
+  font-size: 11px;
+  color: #eee;
+  margin-top: 6px;
+  word-break: break-word;
+  text-align: center;
 }
 
-/* Occupied = green, Vacant = red */
+/* Colors */
 .occupied {
   background: #4caf50;
   color: white;
@@ -55,7 +62,7 @@
   color: white;
 }
 
-/* Optional: Add a "road lane" every 10 slots */
+/* Lane separation */
 .slot:nth-child(10n)::after {
   content: "";
   display: block;
